@@ -1,0 +1,22 @@
+<div class="container">
+  <a href="/reminder/profile"><h3>Profile</h3></a>
+  <img src="https://source.unsplash.com/collection/190727/1600x900" alt="Avatar" style="width:200px">
+  <h1 class="page-header">Reminders</h1>
+
+<ul class="list-group">
+  <% reminders.forEach(function (reminderItem) { %>
+    <li class="list-group-item">
+      <strong><%= reminderItem.title %>: </strong>
+      <%= reminderItem.description %>
+      || Completed:
+      <% if (reminderItem.completed == true) { %>
+        <span class="badge badge-success">True</span>
+      <% } else if (reminderItem.completed == false) { %>
+        <span class="badge badge-danger">False</span>
+      <% } %>
+      <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
+    </li>
+  <% }) %>
+</ul>
+
+</div>

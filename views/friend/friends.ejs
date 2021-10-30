@@ -1,0 +1,42 @@
+<div class="container">
+  <h1 class="page-header">Friends</h1>
+  
+  <h4>Your friends</h4>
+  <ul class="list-group">
+    <% if (friends.length === 0) { %>
+      <li class="list-group-item">
+          <strong>You have no friends :(</strong>
+          <img src="./ratdog.png" alt="ratdog" class="border rounded">
+      </li>
+    <% } %>
+    <% friends.forEach(function (friend) { %>
+      
+      <li class="list-group-item">
+        <div class="image-wrapper">
+          <img src="<%= friend.profilePic  %> " alt="friend profile pic" class="border rounded">
+        </div>
+        <strong><%= friend.email %> | </strong>
+        <%= friend.amount %> reminders
+      </li>
+    <% }) %>
+  </ul>
+  <p></p>
+  <h4>People you may know</h4>
+  <ul class="list-group">
+    <% nonFriends.forEach(function (user) { %>
+      <li class="list-group-item">
+        <div class="image-wrapper">
+          <img src="<%= user.profilePic  %> " alt="friend profile pic" class="border rounded">
+        </div>
+        <strong><%= user.email %> | </strong>
+        <%= user.amount %> reminders
+        <form action="/friends/add" method="POST">
+          <input type="hidden" name="idFriend" value="<%= user.id %>">
+          <button type="submit" class="btn btn-success">Add as friend</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+  
+</div>
+  

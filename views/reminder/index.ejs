@@ -1,22 +1,105 @@
+<% const colors = ["bg-primary","bg-secondary","bg-success","bg-danger","bg-warning","bg-info"] %>
+        <% const randColor = () => {%> 
+        <%  const n = Math.floor(Math.random() * colors.length);%> 
+        <%  return colors[n] %> 
+<% } %> 
+
 <div class="container">
-  <a href="/reminder/profile"><h3>Profile</h3></a>
-  <img src="https://source.unsplash.com/collection/190727/1600x900" alt="Avatar" style="width:200px">
-  <h1 class="page-header">Reminders</h1>
+  <h1 class="page-header">Your reminders</h1>
 
 <ul class="list-group">
   <% reminders.forEach(function (reminderItem) { %>
     <li class="list-group-item">
-      <strong><%= reminderItem.title %>: </strong>
-      <%= reminderItem.description %>
-      || Completed:
-      <% if (reminderItem.completed == true) { %>
-        <span class="badge badge-success">True</span>
-      <% } else if (reminderItem.completed == false) { %>
-        <span class="badge badge-danger">False</span>
+      <div>
+        <a href=<%= "/reminder/" + reminderItem.id %>><strong><%= reminderItem.title %></strong></a>
+      <span class="pull-right">Completed: 
+          <% if (reminderItem.completed == true) { %>
+            <span class="badge badge-success">True</span>
+          <% } else if (reminderItem.completed == false) { %>
+            <span class="badge badge-danger">False</span>
+          <% } %>
+          <% if (reminderItem.reminderTime != "") { %>
+          <p class="time-main">Complete by: <%= reminderItem.reminderTime.split('T')[0] %></p>
+          <% } %>
+        </span>
+        
+      <% reminderItem.tags.forEach((tag) => { %>
+        <div class = "d-inline m-1 tags">
+          <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
+            <%= tag %>
+          </span>
+        </div>
+      <%})%>
+
+      <p class='main-p'><%= reminderItem.description %></p>
+      </div>
+
+      <% if (reminderItem.subtasks.length > 0) { %>
+        <span class="d-block"><strong>Subtasks</strong></span>
+        <% reminderItem.subtasks.forEach((subtask) => { %>
+            <div class="form-check d-inline">
+                <% if (subtask.completed == true) { %>
+                <input class="form-check-input" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
+                <% } else { %>
+                <input class="form-check-input" type="checkbox" id="flexCheckDefault" disabled>
+                <% } %>
+                <label class="form-check-label mr-2" for="flexCheckDefault">
+                <%= subtask.title %>
+                </label>
+            </div>
+        <% }) %>
       <% } %>
-      <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
     </li>
   <% }) %>
 </ul>
+<p></p>
+<h2>Friends' reminders</h2>
+<ul class="list-group">
+    <% userFriends.forEach( function(friend) { %> 
+      <li class="list-group-item"><h6><%= friend.email %></h6>
+          <ul>
+          <% friend.reminders.forEach( function(reminder) { %> 
+              <li class="list-group-item">
+                  <div>
+                    <strong><%= reminder.title %></strong>
+                    <span class="pull-right">Completed: 
+                        <% if (reminder.completed == true) { %>
+                          <span class="badge badge-success">True</span>
+                        <% } else if (reminder.completed == false) { %>
+                          <span class="badge badge-danger">False</span>
+                        <% } %>
+                    </span>
 
+                    <% reminder.tags.forEach((tag) => { %>
+                        <div class = "d-inline m-1 tags">
+                          <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
+                            <%= tag %>
+                          </span>
+                        </div>
+                      <%})%>
+
+                    <p class="main-p"><%= reminder.description %></p>
+                  </div>
+
+                  <% if (reminder.subtasks.length > 0) { %>
+                    <span class="d-block"><strong>Subtasks</strong></span>
+                    <% reminder.subtasks.forEach((subtask) => { %>
+                        <div class="form-check d-inline">
+                            <% if (subtask.completed == true) { %>
+                            <input class="form-check-input" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
+                            <% } else { %>
+                            <input class="form-check-input" type="checkbox" id="flexCheckDefault" disabled>
+                            <% } %>
+                            <label class="form-check-label mr-2" for="flexCheckDefault">
+                            <%= subtask.title %>
+                            </label>
+                        </div>
+                    <% }) %>
+                  <% } %>
+              </li>
+          <% }) %>
+          </ul>
+      </li>
+    <% }) %>
+  </ul>
 </div>

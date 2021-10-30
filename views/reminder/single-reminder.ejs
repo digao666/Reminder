@@ -1,27 +1,73 @@
+<% const colors = ["bg-primary","bg-secondary","bg-success","bg-danger","bg-warning","bg-info"] %>
+        <% const randColor = () => {%> 
+        <%  const n = Math.floor(Math.random() * colors.length);%> 
+        <%  return colors[n] %> 
+<% } %> 
 <div class="container">
-  <h1 class="page-header">Reminders</h1>
-
     <ul class="list-group">
       <li class="list-group-item">
-        <h3><strong><%= reminderItem.title %>: </strong></h3>
-        <h4><%= reminderItem.description %></h4>
-        <h5>Subtask:</h5>
-        <h5><%= reminderItem.subtask %></h5>
-        <h4>Completed:
+        <h1><%= reminderItem.title %></h3>
+
+        <% if (reminderItem.tags.length == 0) { %>
+          <label>No tags at the moment</label>
+        <% } else {%>
+          <% reminderItem.tags.forEach((tag) => { %>
+            <div class = "d-inline m-1 tags">
+              <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
+                <%= tag %>
+              </span>
+            </div>
+            <%})%>
+          <%}%>
+
+        <h3> &#9997 notes: <%= reminderItem.description %></h4>
+        <h4>STATUS</h4>
+        <div id="box">
           <% if (reminderItem.completed == true) { %>
-            <span class="label label-success">True</span>
+            Completed &#128515
           <% } else if (reminderItem.completed == false) { %>
-            <span class="label label-danger">False</span>
+            Pending &#128528
           <% } %>
-        </h4>
+        </div>
 
+        <h4>REMIND ME</h4>
+        <div id="box">
+          <% if ( distanceToNow != '') { %>
+            <form class="deleteReminder" method="POST">
+              <div style="display:inline">
+                <%= distanceToNow %> 
+                <button class="btn-time"><i class="fa fa-trash"></i></button>
+              </div>
+            </form>
+          <% } else { %>
+            Click edit to set a reminder time.
+          <% } %>
+        </div>
+
+        <h4>SUBTASKS</h4>
+        <% if (reminderItem.subtasks.length == 0) { %>
+          <div id="box">
+            <label>No subtask at the moment...</label>
+          </div>
+        <% } else {%>
+        <% reminderItem.subtasks.forEach((subtask) => { %>
+          <div class="form-check-single">
+          <% if (subtask.completed == true) { %>
+            <input class="form-checkbox" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
+          <% } else { %>
+            <input class="form-checkbox" type="checkbox" id="flexCheckDefault" disabled>
+          <% } %>
+        <label class="form-check-label" for="flexCheckDefault">
+          <%= subtask.title %>
+        </label>
+        </div>
+        <% }) }%>
+        <p></p>
         <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
-
-        <form class="deleteForm "method="POST" action=<%= "/reminder/delete/" + reminderItem.id  %>>
+        <form class="deleteForm " method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
 
       </li>
     </ul>
-
 </div>

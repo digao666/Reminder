@@ -4,14 +4,45 @@
       <label for="title">Title</label>
       <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
     </div>
+
     <div class="form-group">
       <label for="description">Description</label>
       <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
     </div>
-    <div class="form-group">
-      <label for="subtask">Subtask</label>
-      <textarea class="form-control" id="subtaskInput" rows="3" placeholder="Subtask" name="subtask"></textarea>
+
+    <div class="form-group" id='tagList'>
+      <label for="tags">Tags</label>
+      <p id="tagsNone">No tags at the moment...</p>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+
+    <div class="form-group">
+      <textarea class="form-control" id="createTagTextArea" placeholder="Add a new tag"></textarea>
+      <p></p>
+      <button type='button' id='createTag' class='btn btn-primary'>Create Tag</button>
+    </div>
+
+    <div class="form-group" id="subtaskList">
+      <label for="subtasks">Subtasks</label>
+      <p id="subtaskNone">No subtask at the moment...</p>
+    </div>
+
+    <div class="form-group">
+      <textarea class="form-control" id="createSubtaskTextArea" placeholder="Add a new subtask"></textarea>
+      <p></p>
+      <button type="button" id="createSubtask" class="btn btn-primary">Create Subtask</button>
+    </div>
+
+    <div class="form-group">
+      <lable for="reminderDate">Set Reminder Date: </lable>
+      <input type="date" class="form-control" name="reminderDate">
+    </div>
+
+    <div class="form-group">
+      <lable for="reminderTime">Set Reminder Time: </lable>
+      <input type="time" class="form-control" name=reminderTime>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
+<script src="/subtask.js"></script>

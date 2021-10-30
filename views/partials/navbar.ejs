@@ -4,9 +4,18 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" href="/reminders">Reminder List</a>
+    <div class="navbar-nav mr-auto">
+      <a class="nav-item nav-link" href="/reminders">List All</a>
       <a class="nav-item nav-link" href="/reminder/new">Create</a>
     </div>
+    <div class="navbar-nav mr-1">
+        <a class="nav-item nav-link" href="/friends">Friends</a>
+        <a href="/auth/logout" class="nav-item nav-link">Logout</a>
+    </div>
+    <% if (typeof(profilePic) != 'undefined') { %>
+      <div class="image-wrapper navbar-nav mr-2">
+        <img src="<%= profilePic %>" alt="profile pic" class="nav-item border rounded">
+      </div>
+    <% } %> 
   </div>
 </nav>

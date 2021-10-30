@@ -16,13 +16,11 @@
 
   <body>
 
-    
-
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
         <a class="navbar-brand" href="/">Remindly</a>
-        <a href="/login" class="btn btn-primary">Sign In</a>
+        <a href="/auth/login" class="btn btn-primary">Sign In</a>
       </div>
     </nav>
 
@@ -35,10 +33,10 @@
             <h1 class="mb-5">A simple way to organize your life.</h1>
           </div>
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-            <form>
+            <form action="/auth/register" method="GET">
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
+                  <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email...">
                 </div>
                 <div class="col-12 col-md-3">
                   <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
@@ -121,21 +119,21 @@
           <div class="col-lg-4">
             <div class="testimonial-item mx-auto mb-5 mb-lg-0">
               <img class="img-fluid rounded-circle mb-3" src="https://elireview.com/wp-content/uploads/2016/12/reed-profile-square.jpg" alt="">
-              <h5 id="firstuser">Cindy</h5>
+              <h5>Margaret E.</h5>
               <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-              <img class="img-fluid rounded-circle mb-3" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80" alt="">
-              <h5 id="seconduser">Fred S.</h5>
+              <img class="img-fluid rounded-circle mb-3" src="https://elireview.com/wp-content/uploads/2016/12/reed-profile-square.jpg" alt="">
+              <h5>Fred S.</h5>
               <p class="font-weight-light mb-0">"Take my money."</p>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-              <img class="img-fluid rounded-circle mb-3" src="https://images.unsplash.com/photo-1557296387-5358ad7997bb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80" alt="">
-              <h5 id="thirduser">Sarah	W.</h5>
+              <img class="img-fluid rounded-circle mb-3" src="https://elireview.com/wp-content/uploads/2016/12/reed-profile-square.jpg" alt="">
+              <h5>Sarah	W.</h5>
               <p class="font-weight-light mb-0">"Thanks so much for making this!"</p>
             </div>
           </div>
@@ -150,19 +148,19 @@
           <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
             <ul class="list-inline mb-2">
               <li class="list-inline-item">
-                <a href="/about">About</a>
+                <a href="#">About</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="/contact">Contact</a>
+                <a href="#">Contact</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="/term">Terms of Use</a>
+                <a href="#">Terms of Use</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="/privacy">Privacy Policy</a>
+                <a href="#">Privacy Policy</a>
               </li>
             </ul>
             <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2018. All Rights Reserved.</p>
@@ -170,21 +168,17 @@
           <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
             <ul class="list-inline mb-0">
               <li class="list-inline-item mr-3">
-                <a href="http://www.facebook.com">
-                  <img src="//www.flaticon.com/svg/vstatic/svg/124/124032.svg?token=exp=1619120274~hmac=5883587737c9b61b687943f8d0a0dd36" alt="">
+                <a href="#">
                   <i class="fa fa-facebook fa-2x fa-fw"></i>
                 </a>
               </li>
               <li class="list-inline-item mr-3">
-                <a href="http://www.twitter.com">
-                  <img src="https://www.flaticon.com/svg/vstatic/svg/124/124021.svg?token=exp=1619120182~hmac=d7db0b8ad72aa176a53561a940705ee6" alt="">
-
+                <a href="#">
                   <i class="fa fa-twitter fa-2x fa-fw"></i>
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="http://www.insgram.com">
-                  <img src="https://www.flaticon.com/svg/vstatic/svg/124/124032.svg?token=exp=1619120274~hmac=5883587737c9b61b687943f8d0a0dd36" alt="">
+                <a href="#">
                   <i class="fa fa-instagram fa-2x fa-fw"></i>
                 </a>
               </li>

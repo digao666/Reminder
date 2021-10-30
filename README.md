@@ -18,10 +18,15 @@ benefit friends who are planning events together and want to organize their task
 
 # Project Stack 
 ● OS: Linux
+
 ● Front-end: JavaScript
+
 ● Back-end: Node.js
+
 ● Web Server: Express JS (AWS)
+
 ● Database: MySQL(Digital Ocean)
+
 ● Load Balancer: Nginx (AWS)
 
 
@@ -39,7 +44,10 @@ The project should now be up and running with nodemon!
 # About Us 
 
 Di Gao: dgao12@my.bcit.ca
+
 Benny Jiang: zijiang35@my.bcit.ca
+
 Ingrid Zeng: xzeng11@my.bcit.ca
+
 Stella Yu: syu116@my.bcit.ca
 

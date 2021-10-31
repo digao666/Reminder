@@ -37,8 +37,8 @@ const indexRoute = require("./routes/indexRoute");
 app.use("/", indexRoute)
 app.use("/auth", authRoute)
 
-app.listen(3001, function() {
+app.listen(4200, function() {
     console.log(
-        "Server running. Visit: https://localhost:3001/reminders in your browser 🚀"
+        "Server running. Visit: http://localhost:4200 in your browser 🚀"
     );
 });

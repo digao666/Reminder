@@ -9,6 +9,26 @@ export async function getAllreminders(user_id){
         })
     
 }
+
+
+export async function getAllsubtaskes(reminder_id){
+    return db
+        .query(`Select * from subtask where frn_reminder_id=?`,[reminder_id])
+        .then((result)=>{
+            return result[0]
+        })
+    
+}
+
+export async function getAlltages(reminder_id){
+    return db
+        .query(`Select * from tag where frn_reminder_id=?`,[reminder_id])
+        .then((result)=>{
+            return result[0]
+        })
+    
+}
+
 export async function getOnereminder(user_id,reminder_id){
     return db
     .query(
@@ -30,7 +50,8 @@ export async function createreminders(user_id,data){
            completed,
            reminderTime,
            subtasks,
-           tags}=data;
+           tags
+        }=data;
     return db
     .execute(
         `insert into reminder(
@@ -131,10 +152,10 @@ export async function updatereminders(reminder_id,user_id,data){
             reminder_id,
             user_id,
          ]
-    ).then(()=>{
-        updatesubtask(reminder_id,subtasks);
-        updatetags(reminder_id,tags);
-        getOnereminder(reminder_id,user_id);
+    ).then((result)=>{
+        updatesubtask(result[0].updateID,subtasks);
+        updatetags(result[0].updateID,tags);
+        getOnereminder(result[0].updateID,user_id);
     })
     
 }

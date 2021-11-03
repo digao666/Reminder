@@ -3,10 +3,17 @@ import * as remindersdata from '../../data/remindersdata.js';
 
 export async function getAllreminders(req, res, next) {
     const {userid} = req.params;
-
+    let Allreminderes=[]
     const reminders = await remindersdata.getAllreminders(userid);
     if (reminders) {
-        res.status(200).json(reminders);
+        for(let i =0; i<reminders.length; i++ ){
+            let tags = [];
+            let subtask= [];
+            tags.push(await remindersdata.getAlltages(i.id));
+            subtask.push(await remindersdata.getAllsubtaskes(i.id));
+            Allreminderes.push([reminders[i],tags,subtask]);
+        }
+        res.status(200).json(Allreminderes);
       } else {
         res.status(404).json({ message: `reminders not Found` });
     }
@@ -15,10 +22,15 @@ export async function getAllreminders(req, res, next) {
 
 export async function getOnereminders(req, res, next) {
     const {userid, reminderid} = req.params;
-
-    const reminder = await remindersdata.getOnereminder(userid,reminderid)
+    let Allreminderes=[];
+    const reminder = await remindersdata.getOnereminder(userid, reminderid)
     if (reminder) {
-        res.status(200).json(reminder);
+        let tags = [];
+        let subtask= [];
+        tags.push(await remindersdata.getAlltages(reminder.id));
+        subtask.push(await remindersdata.getAllsubtaskes(reminder.id));
+        Allreminderes.push([reminder[i],tags,subtask]);
+        res.status(200).json(Allreminderes);
       } else {
         res.status(404).json({ message: `reminder not Found` });
     }

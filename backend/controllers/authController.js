@@ -1,4 +1,4 @@
-import * as authdata from '../../data/authdata.js';
+import * as authdata from '../data/authdata.js';
 
 
 export async function getemailandpass(req, res, next) {

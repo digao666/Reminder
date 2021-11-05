@@ -1,4 +1,4 @@
-import { db } from '../../database/database.js';
+import { db } from '../database/database.js';
 
 
 export async function getAllreminders(user_id){

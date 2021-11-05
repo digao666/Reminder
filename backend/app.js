@@ -9,6 +9,8 @@ import cookieParser from 'cookie-parser';
 import  reminderrouter from './router/reminderRouter.js';
 import  friendrouter from './router/friendsrouter.js';
 import  authrouter from './router/authRouter.js';
+import errorrouter from './router/error.js';
+import { config } from './config.js';
 
 
 const app = express();
@@ -28,6 +30,7 @@ app.use(helmet());
 app.use('/reminders', reminderrouter);
 app.use('/friends', friendrouter);
 app.use('/auth', authrouter);
+app.use(errorrouter);
 
 app.listen(config.host.port, () => {
     console.info(`Listening on http://localhost:${config.host.port} 🤗`);

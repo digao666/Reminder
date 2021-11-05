@@ -1,4 +1,4 @@
-import * as remindersdata from '../../data/remindersdata.js';
+import * as remindersdata from '../data/remindersdata.js';
 
 
 export async function getAllreminders(req, res, next) {

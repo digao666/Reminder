@@ -1,4 +1,4 @@
-import * as frienddata from '../../data/frienddata.js';
+import * as frienddata from '../data/friendsdata.js';
 
 
 export async function getallfriends(req, res, next) {

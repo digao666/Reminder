@@ -16,6 +16,13 @@ let user2={
        }
    }
 
+let addfriend={
+
+    "data":{
+           "friendid": 2
+       }
+   }
+
 
 let singlereminder={
 

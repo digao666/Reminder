@@ -3,9 +3,9 @@ import * as frienddata from '../data/friendsdata.js';
 
 export async function getallfriends(req, res, next) {
     
-    const {userid} = req.body;
+    const {userid} = req.params;
 
-    const friends = await frienddata.getallfriends(userid)
+    const friends = await frienddata.getfriends(userid)
     if(friends){
         res.status(200).json(friends);
     } else{
@@ -16,9 +16,9 @@ export async function getallfriends(req, res, next) {
 
 
 export async function createfriend(req, res, next) {
-    
+    const {userid} = req.params;
     const {data} = req.body;
-    const friend = await frienddata.createfriend(data.userid,data.friendid)
+    const friend = await frienddata.addfriends(userid,data.friendid)
     return res.status(201).json(friend);
 
    

@@ -3,8 +3,8 @@ import * as friendController from '../controllers/friendController.js';
 
 const router = express.Router();
 
-router.get('/',friendController.getallfriends);
-router.post('/',friendController.createfriend);
+router.get('/:userid',friendController.getallfriends);
+router.post('/:userid',friendController.createfriend);
 
 
 export default router;

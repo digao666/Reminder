@@ -2,7 +2,7 @@ import * as authdata from '../data/authdata.js';
 
 
 export async function getemailandpass(req, res, next) {
-    const {email} = req.body;
+    const {email} = req.params;
     const pass = await authdata.getemailandpass(email);
     if (pass){
         res.status(200).json(pass); 
@@ -14,7 +14,7 @@ export async function getemailandpass(req, res, next) {
 
 export async function getOneuser(req, res, next) {
     const {id} = req.params;
-    const user = await authdata.getOneuser(id);
+    const user = await authdata.getUserById(id);
     if (user){
         res.status(200).json(user); 
     }else{

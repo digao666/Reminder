@@ -7,74 +7,79 @@ create table user(
     password varchar(35) not null,
     profilePic varchar(200),
     primary key (id)
-);
+)ENGINE = INNODB;
 
-create table friend(
-    friend_id int auto_increment not null,
-    frn_user_id int not null,
-    frn_friend_id int not null,
-    primary key (friend_id),
-    foreign key (frn_user_id) references user(id),
-    foreign key (frn_friend_id) references user(id)
-);
+CREATE TABLE `reminder_database`.`friend` (
+  `friend_id` INT NOT NULL AUTO_INCREMENT,
+  `frn_user_friend_id` INT NOT NULL,
+  `frn_friend_user_id` INT NOT NULL,
+  PRIMARY KEY (`friend_id`),
+  CONSTRAINT `frn_user_friend_id`
+    FOREIGN KEY (`frn_user_friend_id`)
+    REFERENCES `reminder_database`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `frn_friend_user_id`
+    FOREIGN KEY (`frn_friend_user_id`)
+    REFERENCES `reminder_database`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)ENGINE = INNODB;
 
-create table reminder(
-    id int auto_increment not null,
-    reminder_id int not null,
-    frn_user_id int not null,
-    title varchar(100) not null,
-    description varchar(250) not null,
-    completed boolean default false,
-    create_date date,
-    reminder_date date,
-    primary key (id),
-    foreign key (frn_user_id) references user(id)
-);
+CREATE TABLE `reminder_database`.`reminder` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `reminder_id` INT NOT NULL,
+  `frn_user_reminder_id` INT NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(250) NOT NULL,
+  `completed` INT NOT NULL DEFAULT 1,
+  `create_date` DATE NULL,
+  `reminder_date` DATE NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `frn_user_reminder_id`
+    FOREIGN KEY (`frn_user_reminder_id`)
+    REFERENCES `reminder_database`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)ENGINE = INNODB;
 
 CREATE TABLE `reminder_database`.`subtask` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `subtask_id` INT NOT NULL,
-  `frn_reminder_id` INT NOT NULL,
+  `frn_reminder_subtask_id` INT NOT NULL,
   `title` VARCHAR(45) NULL,
   `completed` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
-  INDEX `frn_reminder_id_idx` (`frn_reminder_id` ASC) VISIBLE,
-  CONSTRAINT `frn_reminder_id`
-    FOREIGN KEY (`frn_reminder_id`)
-    REFERENCES `reminder_database`.`user` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT);
+  CONSTRAINT `frn_reminder_subtask_id`
+    FOREIGN KEY (`frn_reminder_subtask_id`)
+    REFERENCES `reminder_database`.`reminder` (`id`)
+    ON DELETE NO action
+    ON UPDATE NO action)
+    ENGINE = INNODB;
 
 
 CREATE TABLE `reminder_database`.`tag` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `tag_id` INT NOT NULL,
-  `frn_reminder_id` INT NOT NULL,
-  `tag` VARCHAR(45) NULL,
+  `frn_reminder_tag_id` INT NOT NULL,
+  `tag` VARCHAR(100) NULL,
   PRIMARY KEY (`id`),
-  INDEX `frn_reminder_id_tag_idx` (`frn_reminder_id` ASC) VISIBLE,
-  CONSTRAINT `frn_reminder_id_tag`
-    FOREIGN KEY (`frn_reminder_id`)
+  CONSTRAINT `frn_reminder_tag_id`
+    FOREIGN KEY (`frn_reminder_tag_id`)
     REFERENCES `reminder_database`.`reminder` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT);
+    ON DELETE NO action
+    ON UPDATE NO action)ENGINE = INNODB;
 
 
 
--- Not correct need to check
+-- delete the child row before the main table
 DELIMITER $$
 CREATE TRIGGER before_reminder_delete
  Before Delete ON reminder
  for each row 
 BEGIN
  DELETE FROM subtask 
- WHERE subtask.frn_reminder_id=old.id;
+ WHERE subtask.frn_reminder_subtask_id=old.id;
 
  DELETE FROM tag 
- WHERE tag.frn_reminder_id=old.id;
+ WHERE tag.frn_reminder_tag_id=old.id;
 END$$
 DELIMITER ;
 
- and
- DELETE FROM tags 
- WHERE tags.frn_reminder_id=new.id;

@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 
 //routers
 import  reminderrouter from './router/reminderRouter.js';
+import  friendrouter from './router/friendsrouter.js';
+import  authrouter from './router/authRouter.js';
 
 
 const app = express();
@@ -24,6 +26,8 @@ app.use(morgan('tiny'));
 app.use(helmet());
 
 app.use('/reminders', reminderrouter);
+app.use('/friends', friendrouter);
+app.use('/auth', authrouter);
 
 app.listen(config.host.port, () => {
     console.info(`Listening on http://localhost:${config.host.port} 🤗`);

@@ -1,14 +1,14 @@
 const express = require("express");
 const passport = require("../middleware/passport");
 const { forwardAuthenticated } = require("../middleware/checkAuth");
-const database = require("../database")
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const router = express.Router();
 
 //Unsplash setup
 const fetch  = require("node-fetch")
-const { createApi } =require("unsplash-js")
+const { createApi } =require("unsplash-js");
+const { emit } = require("nodemon");
 
 global.fetch = fetch;
 const unsplash = createApi({
@@ -43,9 +43,21 @@ router.post(
   "/register",
   (req, res) => {
     const email = req.body.email
-    if (database.find(user => user.email === email)) {
+
+    // check user exist or not
+    api = `http://localhost:8080/auth/user/email/${email}`
+    function Get(api){
+        const Httpreq = new XMLHttpRequest();
+        Httpreq.open("GET",api,false);
+        Httpreq.send(null);
+        return Httpreq.responseText;
+    }
+    let userbyemail = JSON.parse(Get(api))[0];
+    if (typeof userbyemail !== "undefined") {
       res.render("auth/register", { exists: true, email: undefined })
-    } 
+      } 
+    // check user finished 
+
     else {
       unsplash.photos.getRandom({
         query: randomAnimal(),
@@ -58,6 +70,9 @@ router.post(
             const photo = result.response;
             photoSmall = photo.urls.full + '&h=120'
             const password = req.body.password
+            if (password === null){
+              res.json('Please enter a valid password')
+            }
             currDate = new Date()
             const id = currDate.getTime()
 

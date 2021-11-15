@@ -21,18 +21,16 @@ export async function getUserById(id){
 }
 
 export async function createuser(data){
-    const {email,password,profilePic} = data
+    let datalist = [data.email,data.password,data.profilePic]
     return db
     .query(
     `insert into user(
      email,
      password,
      profilePic
-    ) Values (?,?,?)`,[
-        email,
-        password,
-        profilePic
-    ])
+    ) Values (?)`,
+    [datalist]
+    )
     .then((result)=>{
         getUserById(result[0].insertId);
     })

@@ -2,6 +2,7 @@ const express = require("express");
 const passport = require("../middleware/passport");
 const { forwardAuthenticated } = require("../middleware/checkAuth");
 const database = require("../database")
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const router = express.Router();
 
@@ -44,7 +45,8 @@ router.post(
     const email = req.body.email
     if (database.find(user => user.email === email)) {
       res.render("auth/register", { exists: true, email: undefined })
-    } else {
+    } 
+    else {
       unsplash.photos.getRandom({
         query: randomAnimal(),
         featured: true
@@ -58,14 +60,22 @@ router.post(
             const password = req.body.password
             currDate = new Date()
             const id = currDate.getTime()
-            database.push({
+
+            //register api starts here
+            const xhr = new XMLHttpRequest();
+            const api=`http://localhost:8080/reminders/auth/user`;
+            xhr.open("POST", api, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
               id: id, 
               email: email, 
               password: password, 
               reminders: [], 
               friends: [],
               profilePic: photoSmall
-            })
+              }));
+            // register api end
+
             res.redirect("/auth/login")
         }
       })

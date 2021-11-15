@@ -4,7 +4,7 @@ import { db } from '../database/database.js';
 
 export async function getemailandpass(email){
     return db
-        .query(`Select password from user where email=?`,[email])
+        .query(`Select * from user where email=?`,[email])
         .then((result)=>{
             return result[0]
         })

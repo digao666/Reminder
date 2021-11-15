@@ -24,12 +24,8 @@ export async function getOneuser(req, res, next) {
 }
 
 export async function postuser(req, res, next) {
-    
-    console.log(req.body.email)
-    console.log(req.body)
 
     const user = await authdata.createuser(req.body);
-
     return res.status(201).json(user);
 
 }

@@ -63,7 +63,7 @@ router.post(
 
             //register api starts here
             const xhr = new XMLHttpRequest();
-            const api=`http://localhost:8080/reminders/auth/user`;
+            const api=`http://localhost:8080/auth/user`;
             xhr.open("POST", api, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({

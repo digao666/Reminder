@@ -4,7 +4,7 @@ const userModel = {
     findOne: (email) => {
         api = `http://localhost:8080/auth/user/email/${email}`
         function Get(api){
-            var Httpreq = new XMLHttpRequest();
+            const Httpreq = new XMLHttpRequest();
             Httpreq.open("GET",api,false);
             Httpreq.send(null);
             return Httpreq.responseText;
@@ -20,7 +20,7 @@ const userModel = {
     findById: (id) => {
         api = `http://localhost:8080/auth/user/${id}`
         function Get(api){
-            var Httpreq = new XMLHttpRequest();
+            const Httpreq = new XMLHttpRequest();
             Httpreq.open("GET",api,false);
             Httpreq.send(null);
             return Httpreq.responseText;

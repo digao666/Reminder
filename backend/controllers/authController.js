@@ -26,7 +26,6 @@ export async function getOneuser(req, res, next) {
 export async function postuser(req, res, next) {
     
     const user = await authdata.createuser(req.body);
-    console.log(req.body)
     return res.status(201).json(user);
 
 }

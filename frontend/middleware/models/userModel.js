@@ -1,39 +1,37 @@
-const http = require("http");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const userModel = {
     findOne: (email) => {
-        
-        http.get(`http://localhost:8080/auth/user/email/${email}`,resp =>{
-            let data = "";
-            resp.on("data",chunk =>{
-                data += chunk
-                let userbyemail = JSON.parse(data)[0]
-                return userbyemail
-            })
-        })
+        api = `http://localhost:8080/auth/user/email/${email}`
+        function Get(api){
+            var Httpreq = new XMLHttpRequest();
+            Httpreq.open("GET",api,false);
+            Httpreq.send(null);
+            return Httpreq.responseText;
+        }
+        let userbyemail = JSON.parse(Get(api))[0];
 
         if (userbyemail.email === email){
-                return userbyemail;
+            return userbyemail;
             }
         return null
     },
 
     findById: (id) => {
-        
-        http.get(`http://localhost:8080/auth/user/${id}`,resp =>{
-        let data = "";
-            resp.on("data",chunk =>{
-                data += chunk
-                let userbyid = JSON.parse(data)[0]
-                return userbyid
-            })
-        })
+        api = `http://localhost:8080/auth/user/${id}`
+        function Get(api){
+            var Httpreq = new XMLHttpRequest();
+            Httpreq.open("GET",api,false);
+            Httpreq.send(null);
+            return Httpreq.responseText;
+        }
+        let userbyid = JSON.parse(Get(api))[0];
 
-        if (userbyid.id === id) {
-                return userbyid;
+        if (userbyid.id === id){
+            return userbyid;
             }
         return null
-}
+    },
 }
 
 module.exports = { userModel };

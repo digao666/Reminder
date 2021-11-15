@@ -1,5 +1,3 @@
-const getUserById = require("../controller/userController").getUserById
-
 module.exports = {
     ensureAuthenticated: function(req, res, next) {
         if (req.isAuthenticated()) {

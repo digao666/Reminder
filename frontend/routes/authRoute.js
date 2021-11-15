@@ -70,9 +70,6 @@ router.post(
             const photo = result.response;
             photoSmall = photo.urls.full + '&h=120'
             const password = req.body.password
-            if (password === null){
-              res.json('Please enter a valid password')
-            }
             currDate = new Date()
             const id = currDate.getTime()
 

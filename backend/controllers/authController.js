@@ -23,6 +23,15 @@ export async function getOneuser(req, res, next) {
 
 }
 
+export async function selectAlluser(req, res, next) {
+    const userslist = await authdata.getAlluser;
+    if (userslist){
+        res.status(200).json(userslist); 
+    }else{
+        res.status(404).json({ message: `No user in database` });
+    }
+
+}
 export async function postuser(req, res, next) {
     
     const user = await authdata.createuser(req.body);

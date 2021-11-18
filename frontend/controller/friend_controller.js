@@ -4,30 +4,46 @@ const database = require('../database')
 
 let friendsController = {
   list: (req, res) => {
-    // http.post(`http://localhost:8080/friends/${}`)
-
-
+    userid = req.user.id
     let friends = []
-    req.user.friends.forEach( friend => {
-      let user = getUserById(friend)
+    api = `http://localhost:8080/friends/${userid}`
+        function Get(api){
+            const getfriends = new XMLHttpRequest();
+            getfriends.open("GET",api,false);
+            getfriends.send(null);
+            return getfriends.responseText;
+        }
+    let friendid = JSON.parse(Get(api))[0];
+
+    forEach(friendid => {
+      let friend = getUserById(friendid)
 
       friends.push({
-        email: user.email,
-        amount: user.reminders.length,
-        profilePic: user.profilePic
+        email: friend.email,
+        amount: friend.reminders.length,
+        profilePic: friend.profilePic
       })
     })
 
     let nonFriends = []
-    database.forEach( user => {
-      if (!(req.user.friends.includes(user.id)) && 
-      user.id !== req.user.id) {
+    api = `http://localhost:8080/auth/user/all`
+    function Get(api){
+        const getnonfriends = new XMLHttpRequest();
+        getnonfriends.open("GET",api,false);
+        getonfriends.send(null);
+        return getnonfrends.responseText;
+    }
 
+    let userlist = JSON.parse(Get(api))[0];
+    forEach( userlist => {
+      if (!(req.user.friends.includes(userlist)) && 
+      userlist !== req.user.id) {
+      let nonfriend = getUserById(userlist)
         nonFriends.push({
-          email: user.email,
-          amount: user.reminders.length,
-          id: user.id,
-          profilePic: user.profilePic
+          email: nonfriend.email,
+          amount: nonfriend.reminders.length,
+          id: nonfriend.id,
+          profilePic: nonfriend.profilePic
         })
       }
     })
@@ -36,8 +52,14 @@ let friendsController = {
 
   add: (req, res) => {
     newFriend = parseInt(req.body.idFriend)
-    req.user.friends.push(newFriend)
-    // http.post(`http://localhost:8080/friends/${}`)
+    api = `http://localhost:8080/friend/${user.id}`
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", api, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+      friendid:newFriend
+      }));
+
     res.redirect("/friends")
   }
 }

@@ -18,6 +18,15 @@ export async function getUserById(id){
 
 }
 
+export async function getAlluser() {
+    return db
+    .query(`Select id from user`)
+    .then((result)=>{
+        return result
+    })
+
+}
+
 export async function createuser(data){
     let datalist = [data.email,data.password,data.profilePic]
     return db

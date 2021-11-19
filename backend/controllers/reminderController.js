@@ -41,7 +41,6 @@ export async function getOnereminders(req, res, next) {
 export async function Createreminders(req, res, next) {
     const {userid} = req.params;
     const {data} = req.body;
-
     const reminder = await remindersdata.createreminders(userid,data)
     return res.status(201).json(reminder);
 }

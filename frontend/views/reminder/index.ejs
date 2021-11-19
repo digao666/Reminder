@@ -11,7 +11,7 @@
   <% reminders.forEach(function (reminderItem) { %>
     <li class="list-group-item">
       <div>
-        <a href=<%= "/reminder/" + reminderItem.id %>><strong><%= reminderItem.title %></strong></a>
+        <a href=<%= "/reminder/" + reminderItem.reminder_id %>><strong><%= reminderItem.title %></strong></a>
       <span class="pull-right">Completed: 
           <% if (reminderItem.completed == true) { %>
             <span class="badge badge-success">True</span>
@@ -19,32 +19,34 @@
             <span class="badge badge-danger">False</span>
           <% } %>
           <% if (reminderItem.reminderTime != "") { %>
-          <p class="time-main">Complete by: <%= reminderItem.reminderTime.split('T')[0] %></p>
+          <p class="time-main">Complete by: <%= reminderItem.reminder_date.split('T')[0] %></p>
           <% } %>
         </span>
         
-      <% reminderItem.tags.forEach((tag) => { %>
+      <% reminderItem.tags.forEach((subtag) => { %>
+        <% subtag.tag.forEach((tagitem) =>{ %>
         <div class = "d-inline m-1 tags">
           <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
-            <%= tag %>
+            <%= tagitem %>
           </span>
         </div>
+        <%})%>
       <%})%>
 
       <p class='main-p'><%= reminderItem.description %></p>
       </div>
 
-      <% if (reminderItem.subtasks.length > 0) { %>
+      <% if (reminderItem.subtask.length > 0) { %>
         <span class="d-block"><strong>Subtasks</strong></span>
-        <% reminderItem.subtasks.forEach((subtask) => { %>
+        <% reminderItem.subtask.forEach((task) => { %>
             <div class="form-check d-inline">
-                <% if (subtask.completed == true) { %>
+                <% if (task.completed == true) { %>
                 <input class="form-check-input" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
                 <% } else { %>
                 <input class="form-check-input" type="checkbox" id="flexCheckDefault" disabled>
                 <% } %>
                 <label class="form-check-label mr-2" for="flexCheckDefault">
-                <%= subtask.title %>
+                <%= task.title %>
                 </label>
             </div>
         <% }) %>
@@ -70,28 +72,30 @@
                         <% } %>
                     </span>
 
-                    <% reminder.tags.forEach((tag) => { %>
+                    <% reminder.tags.forEach((subtag) => { %>
+                      <% subtag.tag.forEach((tagitem) =>{ %>
                         <div class = "d-inline m-1 tags">
                           <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
-                            <%= tag %>
+                            <%= tagitem %>
                           </span>
                         </div>
+                        <%})%>
                       <%})%>
 
                     <p class="main-p"><%= reminder.description %></p>
                   </div>
 
-                  <% if (reminder.subtasks.length > 0) { %>
+                  <% if (reminder.subtask.length > 0) { %>
                     <span class="d-block"><strong>Subtasks</strong></span>
-                    <% reminder.subtasks.forEach((subtask) => { %>
+                    <% reminder.subtask.forEach((task) => { %>
                         <div class="form-check d-inline">
-                            <% if (subtask.completed == true) { %>
+                            <% if (task.completed == true) { %>
                             <input class="form-check-input" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
                             <% } else { %>
                             <input class="form-check-input" type="checkbox" id="flexCheckDefault" disabled>
                             <% } %>
                             <label class="form-check-label mr-2" for="flexCheckDefault">
-                            <%= subtask.title %>
+                            <%= task.title %>
                             </label>
                         </div>
                     <% }) %>

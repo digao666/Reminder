@@ -45,11 +45,12 @@ export async function createreminders(user_id,data){
            title,
            description,
            completed,
-           reminderTime,
-           subtasks,
+           reminder_date,
+           subtask,
            tags
         }=data;
-    // console.log(data)
+
+    console.log(data)
     return db
     .execute(
         `insert into reminder(
@@ -69,11 +70,11 @@ export async function createreminders(user_id,data){
             description,
             completed,
             new Date().toLocaleDateString().replace('/','-').replace('/','-'),
-            reminderTime,
+            reminder_date,
         ]
     ).then((result) =>{
-        for(let i =0; i<subtasks.length; i++ ){
-            createsubtask(result[0].insertId,subtasks[i]);
+        for(let i =0; i<subtask.length; i++ ){
+            createsubtask(result[0].insertId,subtask[i]);
         }
         let saver=tags.join(",")
         createtags(result[0].insertId,saver);

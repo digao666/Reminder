@@ -12,6 +12,7 @@ const formatSubtasks = (body) => {
             if (Array.isArray(body[key])){
                 currSubtask["title"] = body[key][0]
                 currSubtask["completed"] = true
+                
             } else {
                 currSubtask["title"] = body[key]
                 currSubtask["completed"] = false
@@ -32,19 +33,41 @@ const parseTags = (body) => {
 }
 
 let remindersController = {
-    list: (req, res) => {
+    list:  (req, res) => {
       let friends = []
-      req.user.friends.forEach( friend => {
-        let user = getUserById(friend)
+      //get all current user's friends 
+      let friendapi = `http://localhost:8080/friends/${req.user.id}`
+      //get all reminders of current user
+      let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
+      //get api request
+      let Get = (api) => {
+        const getfriends =  new XMLHttpRequest();
+        getfriends.open("GET",api,false);
+        getfriends.send(null);
+        return getfriends.responseText;
+
+    }
+
+    // get the friend
+    let friendid = JSON.parse(Get(friendapi));
+    // get all the reminders
+    let reminders= JSON.parse(Get(remidnersapi));
+    
+    // loop the friend to correct data structure
+     friendid.forEach( friend => {
+        let user = getUserById(friend.frn_friend_user_id)
+        let remindersF = JSON.parse(Get(`http://localhost:8080/reminders/${friend.frn_friend_user_id}`));
+        
         friends.push({
           email: user.email,    
-          reminders: user.reminders
+          reminders: remindersF
         })
       })
+      // send the data to the page
       res.render("reminder/index", { 
         userFriends: friends,
         profilePic: req.user.profilePic,
-        reminders: req.user.reminders,
+        reminders: reminders,
       });
     },
 
@@ -54,18 +77,31 @@ let remindersController = {
 
     listOne: (req, res) => {
         let reminderToFind = req.params.id;
-        let searchResult = req.user.reminders.find(function(reminder) {
-            return reminder.id == reminderToFind;
-        });
-        if (searchResult != undefined) {
-            if (searchResult.reminderTime != '') {
-                let reminderDay = new Date(searchResult.reminderTime);
+        
+        // get request
+        let Get = (api) => {
+            const getfriends =  new XMLHttpRequest();
+            getfriends.open("GET",api,false);
+            getfriends.send(null);
+            return getfriends.responseText;
+    
+        }
+        // signle reminder api
+        let signlereminderapi= `http://localhost:8080/reminders/${req.user.id}/${reminderToFind}`
+        // single reminder data
+        let signlereminder = JSON.parse(Get(signlereminderapi));
+        console.log(signlereminder)
+
+        // check whether there is reminder
+        if (signlereminder != undefined) {
+            if (signlereminder[0].reminder_date != '') {
+                let reminderDay = new Date(signlereminder[0].reminder_date);
                 let gap = formatRelative(reminderDay, new Date());
                 let formatGap = gap.charAt(0).toUpperCase() + gap.slice(1);
-                res.render("reminder/single-reminder", { reminderItem: searchResult, distanceToNow: formatGap, profilePic: req.user.profilePic});
+                res.render("reminder/single-reminder", { reminderItem: signlereminder[0], distanceToNow: formatGap, profilePic: req.user.profilePic});
             } else {
                 const formatGap = '';
-                res.render("reminder/single-reminder", { reminderItem: searchResult, distanceToNow: formatGap, profilePic: req.user.profilePic});
+                res.render("reminder/single-reminder", { reminderItem: signlereminder[0], distanceToNow: formatGap, profilePic: req.user.profilePic});
             }
         } else {
             res.render("reminder/index", { 
@@ -82,16 +118,44 @@ let remindersController = {
             let time = req.body.reminderTime;
             reminderTime = date + 'T' + time;
         }
+        // get request
+        let Get = (api) => {
+            const getfriends =  new XMLHttpRequest();
+            getfriends.open("GET",api,false);
+            getfriends.send(null);
+            return getfriends.responseText;
+    
+        }
+        // post request
+        let Post =(api,data)=>{
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", api, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
+        }
+
+        //get all reminders of current user
+        let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
+        // get all the reminders
+        let reminders= JSON.parse(Get(remidnersapi));
+        
         let reminder = {
-            id: req.user.reminders.length + new Date().getTime(),
-            title: req.body.title,
-            description: req.body.description,
-            completed: false,
-            reminderTime: reminderTime,
-            subtasks: formatSubtasks(req.body),
-            tags: parseTags(req.body)
+            data:{
+                reminder_id: reminders[reminders.length-1].reminder_id+1,
+                frn_user_reminder_id:req.user.id,
+                title: req.body.title,
+                description: req.body.description,
+                completed: false,
+                reminder_date: reminderTime,
+                subtask: formatSubtasks(req.body),
+                tags: parseTags(req.body)
+            }
         };
-        req.user.reminders.push(reminder);
+        
+        // create a new remidner
+        Post(remidnersapi,reminder)
+
+        // req.user.reminders.push(reminder);
             res.redirect("/reminders");
     },
 

@@ -1,5 +1,4 @@
 const getUserById = require('./userController.js').getUserById
-const http = require('http')
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 let friendsController = {
@@ -15,9 +14,8 @@ let friendsController = {
         }
     let friendid = JSON.parse(Get(api))[0];
 
-    forEach(friendid => {
+    friendid.forEach(friends => {
       let friend = getUserById(friendid)
-
       friends.push({
         email: friend.email,
         amount: friend.reminders.length,
@@ -35,10 +33,9 @@ let friendsController = {
     }
 
     let userlist = JSON.parse(Get(api))[0];
-    forEach( userlist => {
+    userlist.forEach(nonFriends => {(
       if (!(req.user.friends.includes(userlist)) && 
       userlist !== req.user.id) {
-      let nonfriend = getUserById(userlist)
         nonFriends.push({
           email: nonfriend.email,
           amount: nonfriend.reminders.length,

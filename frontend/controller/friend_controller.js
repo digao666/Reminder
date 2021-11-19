@@ -1,6 +1,6 @@
 const getUserById = require('./userController.js').getUserById
 const http = require('http')
-const database = require('../database')
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 let friendsController = {
   list: (req, res) => {

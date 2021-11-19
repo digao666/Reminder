@@ -1,10 +1,10 @@
 const getUserById = require('./userController.js').getUserById
-const http = require('http')
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 let friendsController = {
   list: (req, res) => {
     userid = req.user.id
+    
     let friends = []
     api = `http://localhost:8080/friends/${userid}`
         function Get(api){
@@ -15,7 +15,7 @@ let friendsController = {
         }
     let friendid = JSON.parse(Get(api))[0];
 
-    forEach(friendid => {
+    friendid.forEach(friends => {
       let friend = getUserById(friendid)
 
       friends.push({
@@ -24,6 +24,7 @@ let friendsController = {
         profilePic: friend.profilePic
       })
     })
+
 
     let nonFriends = []
     api = `http://localhost:8080/auth/user/all`
@@ -35,7 +36,8 @@ let friendsController = {
     }
 
     let userlist = JSON.parse(Get(api))[0];
-    forEach( userlist => {
+
+    userlist.forEach( nonFriends => {
       if (!(req.user.friends.includes(userlist)) && 
       userlist !== req.user.id) {
       let nonfriend = getUserById(userlist)

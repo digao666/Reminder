@@ -49,14 +49,15 @@ let friendsController = {
 
   add: (req, res) => {
     newFriend = parseInt(req.body.idFriend)
-    api = `http://localhost:8080/friend/${user.id}`
+    api = `http://localhost:8080/friends/${userid}`
     const xhr = new XMLHttpRequest();
     xhr.open("POST", api, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-      friendid:newFriend
-      }));
-
+        "user_id":userid,
+        "friend_id":newFriend
+      })
+      );
     res.redirect("/friends")
   }
 }

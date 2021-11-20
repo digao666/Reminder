@@ -17,8 +17,8 @@ export async function getallfriends(req, res, next) {
 
 export async function createfriend(req, res, next) {
     const {userid} = req.params;
-    const {data} = req.body;
-    const friend = await frienddata.addfriends(userid,data.friendid)
+    // const {data} = req.body;
+    const friend = await frienddata.addfriends(userid,req.body.friend_id)
     return res.status(201).json(friend);
 
    

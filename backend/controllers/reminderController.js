@@ -24,14 +24,14 @@ export async function getAllreminders(req, res, next) {
 export async function getOnereminders(req, res, next) {
     const {userid, reminderid} = req.params;
     const reminder = await remindersdata.getOnereminder(userid, reminderid)
-
     if (reminder) {
-        let tags = await remindersdata.getAlltages(reminderid);
-        let subtask=await remindersdata.getAllsubtaskes(reminderid);
+        let tags = await remindersdata.getAlltages(reminder[0].id);
+        let subtask=await remindersdata.getAllsubtaskes(reminder[0].id);
+        console.log(tags)
         tags[0]["tag"]=tags[0]["tag"].split(",")
         reminder[0]["subtask"]=subtask
         reminder[0]["tags"]=tags
-        console.log(reminder)
+        // console.log(reminder)
         res.status(200).json(reminder);
       } else {
         res.status(404).json({ message: `reminder not Found` });

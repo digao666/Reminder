@@ -8,7 +8,7 @@ const formatSubtasks = (body) => {
     //Takes req.body and returns formatted subtasks in a list of objects
     Object.keys(body).forEach(key => {
         if (parseInt(key) == key){
-            let currSubtask = {id: key}
+            let currSubtask = {id: key.slice(11)}
             if (Array.isArray(body[key])){
                 currSubtask["title"] = body[key][0]
                 currSubtask["completed"] = true
@@ -90,7 +90,7 @@ let remindersController = {
         let signlereminderapi= `http://localhost:8080/reminders/${req.user.id}/${reminderToFind}`
         // single reminder data
         let signlereminder = JSON.parse(Get(signlereminderapi));
-        console.log(signlereminder)
+        // console.log(signlereminder)
 
         // check whether there is reminder
         if (signlereminder != undefined) {
@@ -138,10 +138,10 @@ let remindersController = {
         let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
         // get all the reminders
         let reminders= JSON.parse(Get(remidnersapi));
-        
         let reminder = {
             data:{
-                reminder_id: reminders[reminders.length-1].reminder_id+1,
+                reminder_id: (reminders.length == 0 ) ? 1 : reminders[reminders.length-1].reminder_id+1,
+                // reminder_id:  1 ,
                 frn_user_reminder_id:req.user.id,
                 title: req.body.title,
                 description: req.body.description,
@@ -152,6 +152,7 @@ let remindersController = {
             }
         };
         
+        // console.log(reminder.data.subtask)
         // create a new remidner
         Post(remidnersapi,reminder)
 

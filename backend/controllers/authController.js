@@ -24,7 +24,7 @@ export async function getOneuser(req, res, next) {
 }
 
 export async function selectAlluser(req, res, next) {
-    const userslist = await authdata.getAlluser;
+    const userslist = await authdata.getAlluser();
     if (userslist){
         res.status(200).json(userslist); 
     }else{

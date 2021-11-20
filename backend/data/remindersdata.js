@@ -7,7 +7,6 @@ export async function getAllreminders(user_id){
         .then((result)=>{
             return result[0]
         })
-    
 }
 
 
@@ -17,7 +16,6 @@ export async function getAllsubtaskes(reminder_id){
         .then((result)=>{
             return result[0]
         })
-    
 }
 
 export async function getAlltages(reminder_id){
@@ -27,11 +25,9 @@ export async function getAlltages(reminder_id){
         .then((result)=>{
             return result[0]
         })
-    
 }
 
 export async function getOnereminder(user_id,reminder_id){
-    
     return db
     .query(
         `select * from reminder where reminder_id=? and frn_user_reminder_id=?`,
@@ -74,7 +70,7 @@ export async function createreminders(user_id,data){
             title,
             description,
             completed,
-            new Date().toLocaleDateString().replace('/','-').replace('/','-'),
+            new Date().toLocaleDateString('en-CA').replace('/','-').replace('/','-'),
             reminder_date,
         ]
     ).then((result) =>{
@@ -85,9 +81,6 @@ export async function createreminders(user_id,data){
         createtags(result[0].insertId,saver);
         return getOnereminder(user_id,reminder_id);
     });
-
-    
-    
 }
 
 export async function createsubtask(reminder_id,data){
@@ -108,9 +101,6 @@ export async function createsubtask(reminder_id,data){
             data.completed,
           ]
     )
-
-
-    
 }
 
 export async function createtags(reminder_id,data){
@@ -127,11 +117,7 @@ export async function createtags(reminder_id,data){
             data,
           ]
     )
-
-
-    
 }
-
 
 export async function updatereminders(reminder_id,user_id,data){
     const {
@@ -170,7 +156,6 @@ export async function updatereminders(reminder_id,user_id,data){
         updatetags(data.id,saver);
         return getOnereminder(user_id,reminder_id);
     })
-    
 }
 
 export async function updatesubtask(reminder_id,data){
@@ -191,7 +176,6 @@ export async function updatesubtask(reminder_id,data){
             reminder_id,
           ]
     )
- 
 }
 
 export async function updatetags(reminder_id,data){
@@ -210,9 +194,7 @@ export async function updatetags(reminder_id,data){
             
           ]
     )
-  
 }
-
 
 export async function deletereminders(user_id,reminder_id){
     return db
@@ -223,7 +205,20 @@ export async function deletereminders(user_id,reminder_id){
              reminder_id,
              user_id,
          ]
-    )
+    ) 
+}
 
-    
+export async function deleteTime(user_id, reminder_id){
+    return db
+    .execute(
+        `
+        update reminder
+        set reminder_date = ""
+        where user_id = ? and reminder_id = ?
+        `,
+        [
+            user_id,
+            reminder_id
+        ]
+    )
 }

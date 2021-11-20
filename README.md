@@ -32,11 +32,16 @@ benefit friends who are planning events together and want to organize their task
 
 ## How to Install and run
 ```git clone https://github.com/digao666/Reminder_webapp.git```
-
 ```cd Reminder_webapp```
 
+# Backend
+```cd backend```
 ```npm install```
+```npm start```
 
+# Frontend
+```cd frontend```
+```npm install```
 ```npm start```
 
 The project should now be up and running with nodemon!

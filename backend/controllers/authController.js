@@ -24,7 +24,7 @@ export async function getOneuser(req, res, next) {
 }
 
 export async function selectAlluser(req, res, next) {
-    const userslist = await authdata.getAlluser;
+    const userslist = await authdata.getAlluser();
     if (userslist){
         res.status(200).json(userslist); 
     }else{
@@ -33,8 +33,8 @@ export async function selectAlluser(req, res, next) {
 
 }
 export async function postuser(req, res, next) {
+    const user = await authdata.createuser(req.body.data);
     
-    const user = await authdata.createuser(req.body);
     return res.status(201).json(user);
 
 }

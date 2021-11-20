@@ -19,6 +19,7 @@ export async function getAllsubtaskes(reminder_id){
 }
 
 export async function getAlltages(reminder_id){
+    console.log(reminder_id)
     return db
         .query(`Select * from tag where frn_reminder_tag_id=?`,[reminder_id])
         .then((result)=>{
@@ -50,7 +51,7 @@ export async function createreminders(user_id,data){
            tags
         }=data;
 
-    console.log(data)
+    // console.log(data)
     return db
     .execute(
         `insert into reminder(
@@ -69,7 +70,7 @@ export async function createreminders(user_id,data){
             title,
             description,
             completed,
-            new Date().toLocaleDateString().replace('/','-').replace('/','-'),
+            new Date().toLocaleDateString('en-CA').replace('/','-').replace('/','-'),
             reminder_date,
         ]
     ).then((result) =>{
@@ -83,7 +84,7 @@ export async function createreminders(user_id,data){
 }
 
 export async function createsubtask(reminder_id,data){
-
+    console.log(data.id)
     return db
     .execute(
         `insert into subtask(

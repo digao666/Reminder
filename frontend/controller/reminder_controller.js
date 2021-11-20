@@ -8,7 +8,7 @@ const formatSubtasks = (body) => {
     //Takes req.body and returns formatted subtasks in a list of objects
     Object.keys(body).forEach(key => {
         if (parseInt(key) == key){
-            let currSubtask = {id: key}
+            let currSubtask = {id: key.slice(11)}
             if (Array.isArray(body[key])){
                 currSubtask["title"] = body[key][0]
                 currSubtask["completed"] = true
@@ -41,10 +41,10 @@ let remindersController = {
       let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
       //get api request
       let Get = (api) => {
-        const getfriends =  new XMLHttpRequest();
-        getfriends.open("GET",api,false);
-        getfriends.send(null);
-        return getfriends.responseText;
+        const xhr =  new XMLHttpRequest();
+        xhr.open("GET",api,false);
+        xhr.send(null);
+        return xhr.responseText;
 
     }
 
@@ -80,16 +80,17 @@ let remindersController = {
         
         // get request
         let Get = (api) => {
-            const getfriends =  new XMLHttpRequest();
-            getfriends.open("GET",api,false);
-            getfriends.send(null);
-            return getfriends.responseText;
+            const xhr =  new XMLHttpRequest();
+            xhr.open("GET",api,false);
+            xhr.send(null);
+            return xhr.responseText;
     
         }
         // signle reminder api
         let signlereminderapi= `http://localhost:8080/reminders/${req.user.id}/${reminderToFind}`
         // single reminder data
         let signlereminder = JSON.parse(Get(signlereminderapi));
+        // console.log(signlereminder)
 
         // check whether there is reminder
         if (signlereminder != undefined) {
@@ -119,10 +120,10 @@ let remindersController = {
         }
         // get request
         let Get = (api) => {
-            const getfriends =  new XMLHttpRequest();
-            getfriends.open("GET",api,false);
-            getfriends.send(null);
-            return getfriends.responseText;
+            const xhr =  new XMLHttpRequest();
+            xhr.open("GET",api,false);
+            xhr.send(null);
+            return xhr.responseText;
     
         }
         // post request
@@ -139,7 +140,8 @@ let remindersController = {
         let reminders= JSON.parse(Get(remidnersapi));
         let reminder = {
             data:{
-                reminder_id: (reminders.length == 0) ? 1 : reminders[reminders.length-1].reminder_id + 1,
+                reminder_id: (reminders.length == 0 ) ? 1 : reminders[reminders.length-1].reminder_id+1,
+                // reminder_id:  1 ,
                 frn_user_reminder_id:req.user.id,
                 title: req.body.title,
                 description: req.body.description,
@@ -150,6 +152,7 @@ let remindersController = {
             }
         };
         
+        // console.log(reminder.data.subtask)
         // create a new remidner
         Post(remidnersapi,reminder)
 
@@ -158,11 +161,32 @@ let remindersController = {
     },
 
     edit: (req, res) => {
-        let reminderToFind = req.params.id;
-        let searchResult = req.user.reminders.find(function(reminder) {
-            return reminder.id == reminderToFind;
-        });
-        let searchResultTime = searchResult.reminderTime
+        // reminderToFind = req.params.id
+        // let searchResult = req.user.reminders.find(function(reminder) {
+        //     return reminder.id == reminderToFind;
+        // });
+        // let searchResultTime = searchResult.reminderTime
+
+
+        // edit api start here
+        let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
+        let Get = (api) => {
+            const xhr =  new XMLHttpRequest();
+            xhr.open("GET",api,false);
+            xhr.send(null);
+            return xhr.responseText;
+        }
+        reminders = Get(remidnersapi)
+        reminders.forEach(obj => {
+            if(obj.id == req.params.id) {
+                return obj
+            } else {
+                return null
+            }
+        })
+        let searchResultTime = obj.reminderTime
+
+
         if (searchResultTime != '') {
             let date = searchResultTime.split('T')[0];
             let time = searchResultTime.split('T')[1];
@@ -172,7 +196,9 @@ let remindersController = {
                 reminderTime: time,
                 profilePic: req.user.profilePic,
                 });
-        } else {
+        } 
+        
+        else {
             let date = '';
             let time = '';
             res.render("reminder/edit", { 
@@ -185,37 +211,75 @@ let remindersController = {
     },
 
     update: (req, res) => {
-        let reminderToUpdate = req.params.id;
-        let searchIndex = req.user.reminders.findIndex(function(reminder) {
-            return reminder.id == reminderToUpdate
-        });
+        // let reminderToUpdate = req.params.id;
+        // let searchIndex = req.user.reminders.findIndex(function(reminder) {
+        //     return reminder.id == reminderToUpdate
+        // });
+
+        //reminder context
         let date = req.body.reminderDate;
         let time = req.body.reminderTime;
         if (date != '' && time != '') {
           var reminderTime = date + 'T' + time;
-        } else {
+        } 
+        else {
           var reminderTime = '';
         }
-        let updatedReminderDict = {
+        let data = {
             id: parseInt(reminderToUpdate),
             title: req.body.title,
             description: req.body.description,
-            //json parse evalutes the string true, false to bool
             completed: JSON.parse(req.body.completed),
             reminderTime: reminderTime,
             subtasks: formatSubtasks(req.body),
             tags: parseTags(req.body)
         };
-        req.user.reminders.splice(searchIndex, 1, updatedReminderDict)
+
+        //update start here
+        updateapi = `http://localhost:8080/reminders/${req.user.id}/${req.params.id}`
+        let Put =(api,data)=>{
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", api, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                let reminder = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    console.table(reminder);
+                } else {
+                    console.error(reminder);
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        }
+        Put(updateapi,data)
+
+        // req.user.reminders.splice(searchIndex, 1, updatedReminderDict)
+
         res.redirect("/reminders");
     },
 
     delete: (req, res) => {
-        let reminderToDelete = req.params.id;
-        let searchIndex = req.user.reminders.findIndex(function(reminder) {
-            return reminder.id == reminderToDelete
-        });
-        req.user.reminders.splice(searchIndex, 1);
+        // let reminderToDelete = req.params.id;
+        // let searchIndex = req.user.reminders.findIndex(function(reminder) {
+        //     return reminder.id == reminderToDelete
+        // });
+        // req.user.reminders.splice(searchIndex, 1);
+        deleteapi = `http://localhost:8080/reminders/${req.user.id}/${req.params.id}`
+        let Delete =(api)=>{
+            const xhr = new XMLHttpRequest();
+            xhr.open("DELETE", api, true);
+            xhr.onload = function () {
+                let result = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    console.table(result);
+                } else {
+                    console.error(result);
+                }
+            }
+            xhr.send(NULL);
+        }
+
+        Delete(deleteapi)
         res.redirect("/reminders");
     },
 

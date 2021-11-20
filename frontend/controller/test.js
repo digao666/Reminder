@@ -16,22 +16,23 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 // add()
 
 function list() {
-    let userid = 1
-    api = `http://localhost:8080/friends/${userid}`
+    api = `http://localhost:8080/auth/users`
         function Get(api){
             const getfriends = new XMLHttpRequest();
             getfriends.open("GET",api,false);
             getfriends.send(null);
             return getfriends.responseText;
         }
-    let friendslist = JSON.parse(Get(api));
-        friendslist.forEach(obj => {
-            let friend = getUserById(obj.frn_friend_user_id)
-            friends.push({
-                email: friend.email,
-                amount: friend.reminders.length,
-                profilePic: friend.profilePic
-              })
+    let userlist = Get(api);
+    console.log(typeof userlist)
+    }
+    //     friendslist.forEach(obj => {
+    //         let friend = getUserById(obj.frn_friend_user_id)
+    //         friends.push({
+    //             email: friend.email,
+    //             amount: friend.reminders.length,
+    //             profilePic: friend.profilePic
+    //           })
     //     friend.email = "123"
     //     friend.reminders = [1,2,3]
     //     friend. profilePic = "123"
@@ -40,8 +41,8 @@ function list() {
     //     amount: friend.reminders.length,
     //     profilePic: friend.profilePic
     //   })
-    })
+    // })
     // console.log(friends)
-}
+// }
 
 list()

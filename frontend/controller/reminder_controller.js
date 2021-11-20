@@ -160,12 +160,32 @@ let remindersController = {
     },
 
     edit: (req, res) => {
-        let reminderToFind = req.params.id;
-        let searchResult = req.user.reminders.find(function(reminder) {
-            return reminder.id == reminderToFind;
-        });
-        let searchResultTime = searchResult.reminderTime
-        
+        // reminderToFind = req.params.id
+        // let searchResult = req.user.reminders.find(function(reminder) {
+        //     return reminder.id == reminderToFind;
+        // });
+        // let searchResultTime = searchResult.reminderTime
+
+
+        // edit api start here
+        let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
+        let Get = (api) => {
+            const xhr =  new XMLHttpRequest();
+            xhr.open("GET",api,false);
+            xhr.send(null);
+            return xhr.responseText;
+        }
+        reminders = Get(remidnersapi)
+        reminders.forEach(obj => {
+            if(obj.id == req.params.id) {
+                return obj
+            } else {
+                return null
+            }
+        })
+        let searchResultTime = obj.reminderTime
+
+
         if (searchResultTime != '') {
             let date = searchResultTime.split('T')[0];
             let time = searchResultTime.split('T')[1];

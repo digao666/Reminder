@@ -71,7 +71,7 @@ export async function createreminders(user_id,data){
             description,
             completed,
             new Date().toLocaleDateString('en-CA').replace('/','-').replace('/','-'),
-            reminder_date,
+            reminderTime,
         ]
     ).then((result) =>{
         for(let i =0; i<subtask.length; i++ ){

@@ -301,11 +301,11 @@ let remindersController = {
             deletetime.send(JSON.stringify(data));
         }
 
-        let singlereminderapi=`http://localhost:8080/reminders/${req.user.id}/${reminderToEdit}`
+        let singlereminderapi=`http://localhost:8080/reminders/${req.user.id}/${reminderToDelete}`
         // get all the reminders
         let reminders= JSON.parse(Get(singlereminderapi));
         let data = reminders.find(function(reminder) {
-            return reminder.id == reminderToEdit
+            return reminder.id == reminderToDelete
         });
         data.reminder_date = '';
         Put(singlereminderapi,data);

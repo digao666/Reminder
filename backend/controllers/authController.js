@@ -33,8 +33,6 @@ export async function selectAlluser(req, res, next) {
 
 }
 export async function postuser(req, res, next) {
-    const user = await authdata.createuser(req.body.data);
-    
+    const user = await authdata.createuser(req.body.data); 
     return res.status(201).json(user);
-
 }

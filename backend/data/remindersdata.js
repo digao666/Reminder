@@ -146,7 +146,7 @@ export async function updatereminders(reminder_id,user_id,data){
             user_id,
          ]
     ).then(()=>{
-        for(let i =0; i<subtasks.length; i++ ){
+        for(let i = 0; i < subtasks.length; i++ ){
             // console.log(subtasks[i])
             updatesubtask(data.id,subtasks[i]);
 
@@ -178,7 +178,6 @@ export async function updatesubtask(reminder_id,data){
 }
 
 export async function updatetags(reminder_id,data){
-    console.log(data)
     return db
     .execute(
         `update tag
@@ -207,17 +206,17 @@ export async function deletereminders(user_id,reminder_id){
     ) 
 }
 
-export async function deleteTime(user_id, reminder_id){
-    return db
-    .execute(
-        `
-        update reminder
-        set reminder_date = ""
-        where user_id = ? and reminder_id = ?
-        `,
-        [
-            user_id,
-            reminder_id
-        ]
-    )
-}
+// export async function deleteTime(user_id, reminder_id){
+//     return db
+//     .execute(
+//         `
+//         update reminder
+//         set reminder_date = ""
+//         where user_id = ? and reminder_id = ?
+//         `,
+//         [
+//             user_id,
+//             reminder_id
+//         ]
+//     )
+// }

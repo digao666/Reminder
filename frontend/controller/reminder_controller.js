@@ -90,7 +90,6 @@ let remindersController = {
         let signlereminderapi= `http://localhost:8080/reminders/${req.user.id}/${reminderToFind}`
         // single reminder data
         let signlereminder = JSON.parse(Get(signlereminderapi));
-        console.log(signlereminder)
 
         // check whether there is reminder
         if (signlereminder != undefined) {
@@ -138,10 +137,9 @@ let remindersController = {
         let remidnersapi=`http://localhost:8080/reminders/${req.user.id}`
         // get all the reminders
         let reminders= JSON.parse(Get(remidnersapi));
-        
         let reminder = {
             data:{
-                reminder_id: reminders[reminders.length-1].reminder_id+1,
+                reminder_id: (reminders.length == 0) ? 1 : reminders[reminders.length-1].reminder_id + 1,
                 frn_user_reminder_id:req.user.id,
                 title: req.body.title,
                 description: req.body.description,
@@ -223,10 +221,30 @@ let remindersController = {
 
     deleteTime: (req, res) => {
         let reminderToDelete = req.params.id;
-        let searchIndex = req.user.reminders.find(function(reminder) {
-            return reminder.id == reminderToDelete
+
+        let Get = (api) => {
+            const getreminders =  new XMLHttpRequest();
+            getreminders.open("GET",api,false);
+            getreminders.send(null);
+            return getreminders.responseText;
+    
+        }
+        // put request
+        let Put =(api,data)=>{
+            const deletetime = new XMLHttpRequest();
+            deletetime.open("PUT", api, true);
+            deletetime.setRequestHeader('Content-Type', 'application/json');
+            deletetime.send(JSON.stringify(data));
+        }
+
+        let singlereminderapi=`http://localhost:8080/reminders/${req.user.id}/${reminderToEdit}`
+        // get all the reminders
+        let reminders= JSON.parse(Get(singlereminderapi));
+        let data = reminders.find(function(reminder) {
+            return reminder.id == reminderToEdit
         });
-        searchIndex.reminderTime = '';
+        data.reminder_date = '';
+        Put(singlereminderapi,data);
         res.redirect(req.get('referer'));
     },
 }

@@ -31,7 +31,6 @@ export async function getOnereminders(req, res, next) {
         tags[0]["tag"]=tags[0]["tag"].split(",")
         reminder[0]["subtask"]=subtask
         reminder[0]["tags"]=tags
-        console.log(reminder)
         res.status(200).json(reminder);
       } else {
         res.status(404).json({ message: `reminder not Found` });
@@ -48,6 +47,7 @@ export async function Createreminders(req, res, next) {
 
 export async function Updatereminders(req, res, next) {
     const {userid, reminderid} = req.params;
+    console.log(req.body)
     const {data} = req.body;
 
     const reminder = await remindersdata.updatereminders(reminderid,userid,data)
@@ -70,13 +70,13 @@ export async function Deletereminders(req, res, next) {
     }
 }
 
-export async function DeleteTime(req, res, next) {
-    const { userid, reminderid } = req.params;
-    const check = await remindersdata.getOnereminder(userid,reminderid)
-    if(check) {
-        const reminder = await remindersdata.deleteTime(userid,reminderid)
-        return res.status(200).json({message: `reminder time is removed`});
-    } else {
-        res.status(404).json({ message: `reminder not Found `})
-    }
-}
+// export async function DeleteTime(req, res, next) {
+//     const { userid, reminderid } = req.params;
+//     const check = await remindersdata.getOnereminder(userid,reminderid)
+//     if(check) {
+//         const reminder = await remindersdata.deleteTime(userid,reminderid)
+//         return res.status(200).json({message: `reminder time is removed`});
+//     } else {
+//         res.status(404).json({ message: `reminder not Found `})
+//     }
+// }

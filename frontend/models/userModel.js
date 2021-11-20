@@ -10,8 +10,7 @@ const userModel = {
             return Httpreq.responseText;
         }
         let userbyemail = JSON.parse(Get(api))[0];
-
-        if (userbyemail.email === email){
+        if (userbyemail !== undefined && userbyemail.email === email){
             return userbyemail;
             }
         return null

@@ -69,7 +69,7 @@ export async function createreminders(user_id,data){
             title,
             description,
             completed,
-            new Date().toLocaleDateString().replace('/','-').replace('/','-'),
+            new Date().toLocaleDateString('en-CA').replace('/','-').replace('/','-'),
             reminder_date,
         ]
     ).then((result) =>{

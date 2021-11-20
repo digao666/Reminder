@@ -6,7 +6,7 @@
 
 <div class="container">
   <h1 class="page-header">Edit</h1>
-  <form action=<%= "/reminder/update/" + reminderItem.id %> method="POST">
+  <form action=<%= "/reminder/update/" + reminderItem.reminder_id %> method="POST">
     <div class="form-group">
       <label for="title">Title</label>
       <input type="text" name="title" class="form-control" id="titleInput" value="<%= reminderItem.title %>">
@@ -19,11 +19,13 @@
 
     <div class="form-group" id="tagList">
       <label>Tags</label>
-      <% reminderItem.tags.forEach((tag) => {%>
+      <% reminderItem.tags.forEach((subtag) => {%>
+        <% subtag.tag.forEach((tagitem) =>{ %>
         <span class="d-inline badge rounded-pill <%= randColor() %> text-light m-1"> 
-          <%= tag %>
+          <%= tagitem %>
         </span>
-        <input type="hidden" name="tag-<%= tag %>" value="tag-<%= tag %>">
+        <input type="hidden" name="tag-<%= tagitem %>" value="tag-<%= tagitem %>">
+        <%})%>
       <%})%>
     </div>
 
@@ -35,18 +37,18 @@
 
     <div class="form-group" id="subtaskList">
       <label for="subtasks">Subtasks</label>
-      <% if (reminderItem.subtasks.length == 0) { %>
+      <% if (reminderItem.subtask.length == 0) { %>
         <p id="subtaskNone">None</p>
       <% } else {%>
-      <% reminderItem.subtasks.forEach((subtask) => { %>
+      <% reminderItem.subtask.forEach((task) => { %>
         <div class="form-check">
-          <input class="form-check-input" type="hidden" name="<%= subtask.id %>" value="<%= subtask.title %>">
-        <% if (subtask.completed == true) { %>
-          <input class="form-check-input" type="checkbox" name="<%= subtask.id %>" value="<%= subtask.title %>" checked="checked">
+          <input class="form-check-input" type="hidden" name="<%= task.subtask_id %>" value="<%= task.title %>">
+        <% if (task.completed == true) { %>
+          <input class="form-check-input" type="checkbox" name="<%= task.subtask_id %>" value="<%= task.title %>" checked="checked">
         <% } else { %>
-          <input class="form-check-input" type="checkbox" name="<%= subtask.id %>" value="<%= subtask.title %>">
+          <input class="form-check-input" type="checkbox" name="<%= task.subtask_id %>" value="<%= task.title %>">
         <% } %>
-        <label class="form-check-label" for="<%= subtask.id %>"><%= subtask.title %></label>
+        <label class="form-check-label" for="<%= task.subtask_id %>"><%= task.title %></label>
         </div>
     <% })}%>
     </div>

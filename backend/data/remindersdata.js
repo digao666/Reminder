@@ -18,8 +18,17 @@ export async function getAllsubtaskes(reminder_id){
         })
 }
 
+export async function getonesubtaskes(reminder_id,id){
+    return db
+        .query(`Select * from subtask where frn_reminder_subtask_id=? and subtask_id=?`,[reminder_id,id])
+        .then((result)=>{
+            return result[0]
+        })
+}
+
+
 export async function getAlltages(reminder_id){
-    console.log(reminder_id)
+    // console.log(reminder_id)
     return db
         .query(`Select * from tag where frn_reminder_tag_id=?`,[reminder_id])
         .then((result)=>{
@@ -71,7 +80,7 @@ export async function createreminders(user_id,data){
             description,
             completed,
             new Date().toLocaleDateString('en-CA').replace('/','-').replace('/','-'),
-            reminderTime,
+            reminder_date,
         ]
     ).then((result) =>{
         for(let i =0; i<subtask.length; i++ ){
@@ -84,7 +93,7 @@ export async function createreminders(user_id,data){
 }
 
 export async function createsubtask(reminder_id,data){
-    console.log(data.id)
+    // console.log(data.id)
     return db
     .execute(
         `insert into subtask(
@@ -119,13 +128,13 @@ export async function createtags(reminder_id,data){
     )
 }
 
-export async function updatereminders(reminder_id,user_id,data){
+export async function updatereminders(reminder_id,user_id,data,auto_id){
     const {
         title,
         description,
         completed,
-        reminderTime,
-        subtasks,
+        reminder_date,
+        subtask,
         tags}=data;
         // console.log(data)
     return db
@@ -142,18 +151,28 @@ export async function updatereminders(reminder_id,user_id,data){
             title,
             description,
             completed,
-            reminderTime,
+            reminder_date,
             reminder_id,
             user_id,
          ]
-    ).then(()=>{
-        for(let i = 0; i < subtasks.length; i++ ){
-            // console.log(subtasks[i])
-            updatesubtask(data.id,subtasks[i]);
+    ).then(async ()=>{
+        for(let i = 0; i < subtask.length; i++ ){
+            // console.log(subtask[i])
+            let test = await  getonesubtaskes(auto_id,subtask[i].id)
+            
+            if(test[0]){
+                
+                updatesubtask(auto_id,subtask[i]);
+            }else{
+                
+                createsubtask(auto_id,subtask[i])
+            }
 
         }
+
         let saver=tags.join(",")
-        updatetags(data.id,saver);
+        // console.log(saver)
+        updatetags(auto_id,saver);
         return getOnereminder(user_id,reminder_id);
     })
 }
@@ -179,6 +198,8 @@ export async function updatesubtask(reminder_id,data){
 }
 
 export async function updatetags(reminder_id,data){
+    console.log(reminder_id)
+    console.log(data)
     return db
     .execute(
         `update tag
@@ -206,6 +227,8 @@ export async function deletereminders(user_id,reminder_id){
          ]
     ) 
 }
+
+
 
 // export async function deleteTime(user_id, reminder_id){
 //     return db

@@ -24,10 +24,11 @@ export async function getAllreminders(req, res, next) {
 export async function getOnereminders(req, res, next) {
     const {userid, reminderid} = req.params;
     const reminder = await remindersdata.getOnereminder(userid, reminderid)
+    // console.log(req.params)
     if (reminder) {
         let tags = await remindersdata.getAlltages(reminder[0].id);
         let subtask=await remindersdata.getAllsubtaskes(reminder[0].id);
-        console.log(tags)
+        // console.log(tags)
         tags[0]["tag"]=tags[0]["tag"].split(",")
         reminder[0]["subtask"]=subtask
         reminder[0]["tags"]=tags
@@ -48,15 +49,21 @@ export async function Createreminders(req, res, next) {
 
 export async function Updatereminders(req, res, next) {
     const {userid, reminderid} = req.params;
-    console.log(req.body)
+    
     const {data} = req.body;
 
-    const reminder = await remindersdata.updatereminders(reminderid,userid,data)
+    const auto_id = await remindersdata.getOnereminder(userid, reminderid)
+    // console.log(auto_id)
+ 
+
+    const reminder = await remindersdata.updatereminders(reminderid,userid,data,auto_id[0].id)
     if (reminder) {
         res.status(200).json(reminder);
       } else {
         res.status(404).json({ message: `reminder not Found` });
     }
+
+    // res.status(404).json({ message: `reminder not Found` })
 }
 
 

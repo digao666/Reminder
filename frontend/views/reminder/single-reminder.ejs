@@ -65,8 +65,8 @@
         </div>
         <% }) }%>
         <p></p>
-        <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
-        <form class="deleteForm " method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
+        <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.reminder_id + "/edit" %>>Edit</a>
+        <form class="deleteForm " method="POST" action=<%= "/reminder/delete/" + reminderItem.reminder_id %>>
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
 

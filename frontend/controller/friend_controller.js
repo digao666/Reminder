@@ -29,8 +29,8 @@ let friendsController = {
     function Get(api){
         const getnonfriends = new XMLHttpRequest();
         getnonfriends.open("GET",api,false);
-        getonfriends.send(null);
-        return getnonfrends.responseText;
+        getnonfriends.send(null);
+        return getnonfriends.responseText;
     }
     let userlist = JSON.parse(Get(api))[0];
 

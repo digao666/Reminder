@@ -55,10 +55,7 @@ router.post(
     let userbyemail = JSON.parse(Get(api))[0];
     if (typeof userbyemail !== "undefined") {
       res.render("auth/register", { exists: true, email: undefined })
-      } 
-    // check user finished 
-
-    else {
+      } else {
       unsplash.photos.getRandom({
         query: randomAnimal(),
         featured: true
@@ -74,19 +71,29 @@ router.post(
             const id = currDate.getTime()
 
             //register api starts here
-            const xhr = new XMLHttpRequest();
+
+            let Post =(api,data)=>{
+              const xhr = new XMLHttpRequest();
+              xhr.open("POST", api, true);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.send(JSON.stringify(data));
+          }
+
             const api=`http://localhost:8080/auth/user`;
-            xhr.open("POST", api, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
+
+            let newuser = {data:{
               id: id, 
               email: email, 
               password: password, 
               reminders: [], 
               friends: [],
               profilePic: photoSmall
-              }));
+              }};
+
+            Post(api,newuser)
             // register api end
+
+
 
             res.redirect("/auth/login")
         }

@@ -28,8 +28,8 @@ export async function getAlluser() {
 }
 
 export async function createuser(data){
+    console.log(data)
     let datalist = [data.email,data.password,data.profilePic]
-    console.log(datalist)
     return db
     .query(
     `insert into user(

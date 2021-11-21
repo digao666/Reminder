@@ -9,10 +9,13 @@ const userModel = {
             Httpreq.send(null);
             return Httpreq.responseText;
         }
-        let userbyemail = JSON.parse(Get(api))[0];
-        if (userbyemail !== undefined && userbyemail.email === email){
-            return userbyemail;
+        if (Get(api) != '[]') {
+            let userbyemail = JSON.parse(Get(api))[0]
+            if (userbyemail.email === email){
+                return userbyemail;
             }
+            return null
+        }
         return null
     },
 

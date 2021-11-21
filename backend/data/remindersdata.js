@@ -129,14 +129,14 @@ export async function createtags(reminder_id,data){
 }
 
 export async function updatereminders(reminder_id,user_id,data,auto_id){
+    console.log(data)
     const {
         title,
         description,
         completed,
         reminder_date,
         subtask,
-        tags}=data;
-        // console.log(data)
+        tags} = data;
     return db
     .execute(
         `update reminder
@@ -230,17 +230,17 @@ export async function deletereminders(user_id,reminder_id){
 
 
 
-// export async function deleteTime(user_id, reminder_id){
-//     return db
-//     .execute(
-//         `
-//         update reminder
-//         set reminder_date = ""
-//         where user_id = ? and reminder_id = ?
-//         `,
-//         [
-//             user_id,
-//             reminder_id
-//         ]
-//     )
-// }
+export async function deleteTime(user_id, reminder_id){
+    return db
+    .execute(
+        `
+        update reminder
+        set reminder_date = ""
+        where reminder_id = ? and frn_user_reminder_id=?
+        `,
+        [
+            reminder_id,
+            user_id
+        ]
+    )
+}

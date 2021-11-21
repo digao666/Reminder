@@ -33,7 +33,7 @@ CREATE TABLE `reminder_database`.`reminder` (
   `description` VARCHAR(250) NOT NULL,
   `completed` INT NOT NULL DEFAULT 1,
   `create_date` DATE NULL,
-  `reminder_date` DATE NULL,
+  `reminder_date` VARCHAR(30),
   PRIMARY KEY (`id`),
   CONSTRAINT `frn_user_reminder_id`
     FOREIGN KEY (`frn_user_reminder_id`)

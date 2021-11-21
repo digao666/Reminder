@@ -184,11 +184,10 @@ let remindersController = {
         reminders = JSON.parse(Get(remidnersapi))
       
         let searchResultTime = reminders[0].reminder_date
-        // console.log(reminders[0])
 
         if (searchResultTime != '') {
             let date = searchResultTime.split('T')[0];
-            let time = searchResultTime.split('T')[1];
+            let time = (searchResultTime.split('T')[1]).slice(0,8);
             res.render("reminder/edit", { 
                 reminderItem: reminders[0],
                 reminderDate: date,
@@ -260,7 +259,6 @@ let remindersController = {
         //     return reminder.id == reminderToDelete
         // });
         // req.user.reminders.splice(searchIndex, 1);
-        console.log(req.params.id)
         deleteapi = `http://localhost:8080/reminders/${req.user.id}/${req.params.id}`
         let Delete =(api)=>{
             const xhr = new XMLHttpRequest();
@@ -284,28 +282,27 @@ let remindersController = {
         let reminderToDelete = req.params.id;
 
         let Get = (api) => {
-            const getreminders =  new XMLHttpRequest();
-            getreminders.open("GET",api,false);
-            getreminders.send(null);
-            return getreminders.responseText;
+            const xhr =  new XMLHttpRequest();
+            xhr.open("GET",api,false);
+            xhr.send(null);
+            return xhr.responseText;
     
         }
         // put request
         let Put =(api,data)=>{
-            const deletetime = new XMLHttpRequest();
-            deletetime.open("PUT", api, true);
-            deletetime.setRequestHeader('Content-Type', 'application/json');
-            deletetime.send(JSON.stringify(data));
-        }
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", api, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
 
-        let singlereminderapi=`http://localhost:8080/reminders/${req.user.id}/${reminderToDelete}`
+        }
+        let singlereminderapi = `http://localhost:8080/reminders/${req.user.id}/${req.params.id}`
+        let removetimeapi=`http://localhost:8080/reminders/${req.user.id}/${req.params.id}/deletetime`
         // get all the reminders
-        let reminders= JSON.parse(Get(singlereminderapi));
-        let data = reminders.find(function(reminder) {
-            return reminder.id == reminderToDelete
-        });
-        data.reminder_date = '';
-        Put(singlereminderapi,data);
+        let reminder= JSON.parse(Get(singlereminderapi));
+        reminder[0].reminder_date = null;
+        console.dir(reminder[0])
+        Put(removetimeapi,reminder);
         res.redirect(req.get('referer'));
     },
 }

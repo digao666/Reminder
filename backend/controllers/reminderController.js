@@ -78,13 +78,13 @@ export async function Deletereminders(req, res, next) {
     }
 }
 
-// export async function DeleteTime(req, res, next) {
-//     const { userid, reminderid } = req.params;
-//     const check = await remindersdata.getOnereminder(userid,reminderid)
-//     if(check) {
-//         const reminder = await remindersdata.deleteTime(userid,reminderid)
-//         return res.status(200).json({message: `reminder time is removed`});
-//     } else {
-//         res.status(404).json({ message: `reminder not Found `})
-//     }
-// }
+export async function DeleteTime(req, res, next) {
+    const { userid, reminderid } = req.params;
+    const check = await remindersdata.getOnereminder(userid,reminderid)
+    if(check) {
+        const reminder = await remindersdata.deleteTime(userid,reminderid)
+        return res.status(200).json({message: `reminder time is removed`});
+    } else {
+        res.status(404).json({ message: `reminder not Found `})
+    }
+}

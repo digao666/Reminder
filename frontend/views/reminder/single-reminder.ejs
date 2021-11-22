@@ -11,12 +11,14 @@
         <% if (reminderItem.tags.length == 0) { %>
           <label>No tags at the moment</label>
         <% } else {%>
-          <% reminderItem.tags.forEach((tag) => { %>
+          <% reminderItem.tags.forEach((subtag) => { %>
+            <% subtag.tag.forEach((tagitem) =>{ %>
             <div class = "d-inline m-1 tags">
               <span class="d-inline badge rounded-pill <%= randColor() %> text-light ">
-                <%= tag %>
+                <%= tagitem %>
               </span>
             </div>
+            <%})%>
             <%})%>
           <%}%>
 
@@ -45,26 +47,26 @@
         </div>
 
         <h4>SUBTASKS</h4>
-        <% if (reminderItem.subtasks.length == 0) { %>
+        <% if (reminderItem.subtask.length == 0) { %>
           <div id="box">
             <label>No subtask at the moment...</label>
           </div>
         <% } else {%>
-        <% reminderItem.subtasks.forEach((subtask) => { %>
+        <% reminderItem.subtask.forEach((task) => { %>
           <div class="form-check-single">
-          <% if (subtask.completed == true) { %>
+          <% if (task.completed == true) { %>
             <input class="form-checkbox" type="checkbox" checked="checked" id="flexCheckDefault" disabled>
           <% } else { %>
             <input class="form-checkbox" type="checkbox" id="flexCheckDefault" disabled>
           <% } %>
         <label class="form-check-label" for="flexCheckDefault">
-          <%= subtask.title %>
+          <%= task.title %>
         </label>
         </div>
         <% }) }%>
         <p></p>
-        <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
-        <form class="deleteForm " method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
+        <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.reminder_id + "/edit" %>>Edit</a>
+        <form class="deleteForm " method="POST" action=<%= "/reminder/delete/" + reminderItem.reminder_id %>>
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
 

@@ -1,3 +1,5 @@
+# testfile 
+test.js
 # Logs
 logs
 *.log
@@ -105,3 +107,5 @@ dist
 
 #vscode settings
 .vscode/
+
+.package-lock.json

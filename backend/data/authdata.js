@@ -28,6 +28,7 @@ export async function getAlluser() {
 }
 
 export async function createuser(data){
+    console.log(data)
     let datalist = [data.email,data.password,data.profilePic]
     return db
     .query(

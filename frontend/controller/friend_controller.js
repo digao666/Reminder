@@ -1,48 +1,43 @@
 const getUserById = require('./userController.js').getUserById
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-let friendsController = {
-  list: (req, res) => {
-    userid = req.user.id
 
+
+let friendsController = {
+  
+  list: (req, res) => {
+
+    friendapi = `http://localhost:8080/friends/${req.user.id}`
+    userlistapi = `http://localhost:8080/auth/users`
+    Get = (api) => {
+      const xhr =  new XMLHttpRequest();
+      xhr.open("GET",api,false);
+      xhr.send(null);
+      return xhr.responseText;
+
+}
     let friends = []
-    api = `http://localhost:8080/friends/${userid}`
-        function Get(api){
-            const getfriends = new XMLHttpRequest();
-            getfriends.open("GET",api,false);
-            getfriends.send(null);
-            return getfriends.responseText;
-        }
-        let friendslist = JSON.parse(Get(api));
-        friendslist.forEach(obj => {
-            let friend = getUserById(obj.frn_friend_user_id)
-            friends.push({
-                email: friend.email,
-                amount: friend.reminders.length,
-                profilePic: friend.profilePic
-              })
+    let friendslist = JSON.parse(Get(friendapi));
+    friendslist.forEach(obj => {
+        let friend = getUserById(obj.frn_friend_user_id)
+        friends.push({
+            email: friend.email,
+            //amount: friend.reminders.length,
+            profilePic: friend.profilePic
+          })
     })
 
-
     let nonFriends = []
-    api = `http://localhost:8080/auth/users`
-    function Get(api){
-        const getnonfriends = new XMLHttpRequest();
-        getnonfriends.open("GET",api,false);
-        getonfriends.send(null);
-        return getnonfrends.responseText;
-    }
-    let userlist = JSON.parse(Get(api))[0];
-
+    let userlist = JSON.parse(Get(userlistapi))[0];
     userlist.forEach( obj => {
-      if (!(req.user.friends.includes(obj.id)) && 
-      obj.id !== req.user.id) {
-      let nonfriend = getUserById(obj.id)
-        nonFriends.push({
-          email: nonfriend.email,
-          amount: nonfriend.reminders.length,
-          id: nonfriend.id,
-          profilePic: nonfriend.profilePic
+        if (!(friendslist.includes(obj.id)) && 
+        obj.id !== req.user.id) {
+        let nonfriend = getUserById(obj.id)
+          nonFriends.push({
+            email: nonfriend.email,
+            // amount: nonfriend.reminders.length,
+            id: nonfriend.id,
+            profilePic: nonfriend.profilePic
         })
       }
     })
@@ -50,16 +45,35 @@ let friendsController = {
   },
 
   add: (req, res) => {
+    friendapi = `http://localhost:8080/friends/${req.user.id}`
     newFriend = parseInt(req.body.idFriend)
-    api = `http://localhost:8080/friends/${userid}`
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", api, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({
-        "user_id":userid,
+    Get = (api) => {
+      const xhr =  new XMLHttpRequest();
+      xhr.open("GET",api,false);
+      xhr.send(null);
+      return xhr.responseText;
+
+    }
+
+    let list= JSON.parse(Get(friendapi))
+ 
+    let check = true
+    list.forEach(friend=>{
+      if(friend.frn_friend_user_id == newFriend){
+        check = false
+      }
+    } )
+
+    if (check){
+    const addfriend = new XMLHttpRequest();
+    addfriend.open("POST", friendapi, true);
+    addfriend.setRequestHeader('Content-Type', 'application/json');
+    addfriend.send(JSON.stringify({
+        "user_id":req.user.id,
         "friend_id":newFriend
       })
       );
+    }
     res.redirect("/friends")
   }
 }

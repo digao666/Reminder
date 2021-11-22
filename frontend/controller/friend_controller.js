@@ -47,6 +47,24 @@ let friendsController = {
   add: (req, res) => {
     friendapi = `http://localhost:8080/friends/${req.user.id}`
     newFriend = parseInt(req.body.idFriend)
+    Get = (api) => {
+      const xhr =  new XMLHttpRequest();
+      xhr.open("GET",api,false);
+      xhr.send(null);
+      return xhr.responseText;
+
+    }
+
+    let list= JSON.parse(Get(friendapi))
+ 
+    let check = true
+    list.forEach(friend=>{
+      if(friend.frn_friend_user_id == newFriend){
+        check = false
+      }
+    } )
+
+    if (check){
     const addfriend = new XMLHttpRequest();
     addfriend.open("POST", friendapi, true);
     addfriend.setRequestHeader('Content-Type', 'application/json');
@@ -55,6 +73,7 @@ let friendsController = {
         "friend_id":newFriend
       })
       );
+    }
     res.redirect("/friends")
   }
 }
